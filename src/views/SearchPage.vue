@@ -1,4 +1,33 @@
-<!-- src/views/SearchPage.vue -->
+<template>
+  <div style="height: 100%">
+      <el-container style="height: 100%">
+          <el-header style="height: 25%;padding-left: 0;padding-right: 0;background-color: #d3dce6;">
+            <HeaderSection/>
+          </el-header>
+          <el-container height="100%">
+              <el-aside width="15%;" background-color: #d3dce6;>
+
+              </el-aside>
+              <el-main height="100%" style="padding: 0px 5% 0px 0px; background-color: #e9eef3;">
+
+              </el-main>
+          </el-container>
+      </el-container>
+  </div>
+</template>
+
+
+<script setup>
+import HeaderSection from '../components/SearchHeader.vue';
+</script>
+
+
+<style>
+</style>
+
+
+
+<!-- src/views/SearchPage.vue
 <template>
     <h1>PAGE2_SearchPage 普通检索页面</h1>
     <div class="search-container">
@@ -56,4 +85,4 @@
     margin-top: 30px;
   }
   </style>
-  
+   -->
