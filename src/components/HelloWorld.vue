@@ -19,7 +19,13 @@ const count = ref(0)
     </p>
   </div>
 
-  <el-button type="primary">点击我</el-button>
+  <el-button type="primary" @click="count++">点击我</el-button>
+  <el-button @click="count++">Default</el-button>
+  <el-button type="primary" @click="count++">Primary</el-button>
+  <el-button type="success" @click="count++">Success</el-button>
+  <el-button type="info" @click="count++">Info</el-button>
+  <el-button type="warning" @click="count++">Warning</el-button>
+  <el-button type="danger" @click="count++">Danger</el-button>
 
   <p>
     Check out
