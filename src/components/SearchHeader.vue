@@ -1,8 +1,12 @@
 <template>
 
-      <el-button @click="goToHome" type="primary">返回首页_page1</el-button>
-  
+      
+      <el-button class="home-btn" @click="goToHome" style="margin-left: 10px;">
+        GoBackToHomePage
+      </el-button>
+
       <el-input
+        class="rounded-input"
         v-model="searchQuery"
         placeholder="输入搜索内容..."
         @keyup.enter="triggerSearch"
@@ -13,9 +17,12 @@
         </template>
       </el-input>
   
-      <el-button @click="goToChatbot" type="success">去AI智能问答_page3</el-button>
+      <el-button class="chatbot-btn" @click="goToChatbot" style="margin-left: 10px;">
+        GoToChatbotAI
+      </el-button>
 
-  </template>
+
+</template>
   
   <script setup>
   import { ref } from 'vue';
@@ -38,5 +45,20 @@
   </script>
   
   <style scoped>
+  .home-btn {
+  background-color: #2196f3 !important; /* 蓝色示例 */
+  border-color: #2196f3 !important;
+  color: #fff !important;
+  }
+
+  .chatbot-btn {
+  background-color: #eb7c5d !important; /* 绿色示例 */
+  border-color: #eb7c5d !important;
+  color: #fff !important;
+  }
+
+  .rounded-input ::v-deep .el-input__inner {
+  border-radius: 50px !important;
+  }
   </style>
   
