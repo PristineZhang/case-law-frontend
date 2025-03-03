@@ -6,12 +6,25 @@
 
             <!-- 显示聊天记录 -->
             <div class="messagesBox">
-                <div class="messageItem" v-for="(msg, index) in messages" :key="index">
-                    <div class="message">
-                        <strong>User:</strong> {{ msg }}
-                    </div>
-                    <div class="message">
-                        <strong>AI:</strong> {{ getAIResponse(msg) }}
+                <div class="messageItem" v-for="(item, index) in messages" key="index">
+                    <div style="margin-top: 10px;padding: 15px;">
+                        <el-row :gutter="20">
+                            <el-col :span="6" v-for="(link) in item.links">
+                                <div class="links">
+                                    <div>{{ link}}</div>
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <div class="message">
+                            Original question: 
+                            <br />
+                            {{ item.question }}
+                        </div>
+                        <div class="message">
+                            AI: 
+                            <br />
+                            {{ item.answer }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,6 +45,7 @@
 
 <script>
 import { ref } from 'vue';
+import axios from '../utils/axios';
 
 export default {
   name: 'ChatApp',
@@ -43,14 +57,28 @@ export default {
     // 发送消息
     const sendMessage = () => {
       if (message.value.trim()) {
-        messages.value.push(message.value); // 保存用户消息
+        const userMessage = message.value
         message.value = '';  // 清空输入框
+
+        axios.post('/api/chatbot', { question: userMessage })
+        .then(res => {
+            console.log(res)
+            messages.value.push({
+                question: userMessage,
+                answer: res.answer,
+                links: res.links
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching AI response:", error);
+        });
       }
     };
 
     // 获取 AI 回复（可以根据需要扩展这个方法，模拟不同的回答逻辑）
     const getAIResponse = (msg) => {
-      return `This is a response to: ${msg}`;
+        const foundMessage = messages.value.find(m => m.question === msg);
+        return foundMessage ? foundMessage : "Generating response...";
     };
 
     // 返回需要在模板中使用的数据和方法

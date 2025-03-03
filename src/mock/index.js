@@ -86,4 +86,21 @@ Mock.mock('/api/filters', 'get', () => {
       { source: 'federal court of Australia4', val: 4 },
     ],
   };
+})
+
+
+Mock.mock('/api/chatbot', 'post', () => {
+  // Mock data for filter options
+  return {
+    answer: "This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.This is the chatbot's response based on your question.",
+    links: [
+      "https://example.com/article1" ,
+      "https://example.com/article2" ,
+      "https://example.com/article3" ,
+      "https://example.com/article4" ,
+      "https://example.com/article5" ,
+      "https://example.com/article6" ,
+      "https://example.com/article7" ,
+    ],
+  };
 });
