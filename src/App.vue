@@ -1,13 +1,21 @@
-<script setup>
+<script>
+import Head from "./components/SearchHeader.vue"
+export default {
+  name: 'App',
+  components: {
+    Head
+  }
+}
 </script>
 
 <template>
-  <div class="main">
-    <router-view /> <!-- 用于展示根据路由加载的页面组件 -->
+   <div class="main">
+    <Head></Head>
+    <router-view /> 
   </div>
 </template>
 
-<style scoped>
+<style>
 .main {
   position: absolute;
   top: 0;
@@ -16,4 +24,15 @@
   left: 0;
   width: 100%;
 }
+
+#app,body,html{
+  margin: 0;
+  padding: 0;
+}
+.el-checkbox{
+  width: 100%;
+}
+.el-progress-bar__outer{
+  background-color: #fff !important;
+} 
 </style>
