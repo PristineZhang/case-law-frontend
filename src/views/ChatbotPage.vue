@@ -1,69 +1,136 @@
-<!-- src/views/ChatbotPage.vue -->
 <template>
-    <div class="chatbot-container">
-      <h2>PAGE3_ChatBotPage ai问答页面</h2>
-      <el-input
-        v-model="userInput"
-        placeholder="请输入问题并按回车"
-        @keyup.enter="handleQuestion"
-        style="width: 70%;"
-      />
-      <el-button type="primary" @click="handleQuestion">提交问题(todo功能)</el-button>
-      <el-button type="warning" @click="goToSearch" style="margin-left: 10px;">去普通搜索_page2</el-button>
+    <div class="chat">
+        <div style="width: 80%;margin: 0 auto;">
+            <div style="padding-top: 30px;font-weight: bold;font-size: 20px;">What will happen if I steal a car?</div>
 
-      <el-button type="info" @click="goToHome" style="margin-left: 10px;">返回首页_page1</el-button>
-  
-      <div v-if="chatHistory.length" class="chat-window">
-        <div v-for="(msg, index) in chatHistory" :key="index" class="message">
-          <p><strong>用户:</strong> {{ msg.question }}</p>
-          <p><strong>AI:</strong> {{ msg.answer }}</p>
+
+            <!-- 显示聊天记录 -->
+            <div class="messagesBox">
+                <div class="messageItem" v-for="(msg, index) in messages" :key="index">
+                    <div class="message">
+                        <strong>User:</strong> {{ msg }}
+                    </div>
+                    <div class="message">
+                        <strong>AI:</strong> {{ getAIResponse(msg) }}
+                    </div>
+                </div>
+            </div>
+            <!-- 动态聊天部分 -->
+            <div class="search">
+                <textarea v-model="message" placeholder="Message to..."></textarea>
+                <div class="sendBtn" @click="sendMessage" :class="{ 'disabled': !message.trim() }"
+                    :disabled="!message.trim()">
+                    <span>Send</span>
+                    <img src="../assets/right.png" alt="">
+                </div>
+            </div>
+
+
         </div>
-      </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  
-  const router = useRouter();
-  const userInput = ref('');
-  const chatHistory = ref([]);
-  
-  const handleQuestion = () => {
-    if (userInput.value.trim() !== '') {
-      const question = userInput.value;
-      const answer = `关于 "${question}" 的 AI 回答示例...`;
-      chatHistory.value.push({ question, answer });
-      userInput.value = '';
-    }
-  };
-  
-  const goToSearch = () => {
-    router.push('/search');
-  };
+</template>
 
-  const goToHome = () => {
-  router.push('/');
+<script>
+import { ref } from 'vue';
+
+export default {
+  name: 'ChatApp',
+  setup() {
+    // 使用 ref 来定义响应式数据
+    const message = ref('');  // 当前输入的消息
+    const messages = ref([]); // 存储所有的聊天记录
+
+    // 发送消息
+    const sendMessage = () => {
+      if (message.value.trim()) {
+        messages.value.push(message.value); // 保存用户消息
+        message.value = '';  // 清空输入框
+      }
+    };
+
+    // 获取 AI 回复（可以根据需要扩展这个方法，模拟不同的回答逻辑）
+    const getAIResponse = (msg) => {
+      return `This is a response to: ${msg}`;
+    };
+
+    // 返回需要在模板中使用的数据和方法
+    return {
+      message,
+      messages,
+      sendMessage,
+      getAIResponse
+    };
+  }
 };
-  </script>
-  
-  <style scoped>
-  .chatbot-container {
-    padding: 40px;
-    text-align: center;
-  }
-  .chat-window {
-    margin-top: 30px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    max-height: 300px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-  }
-  .message {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  </style>
-  
+</script>
+
+<style scoped>
+.chat {
+    width: 100%;
+    background-color: #F6F7FB;
+    padding-bottom: 50px;
+}
+
+.search {
+    width: 100%;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.12);
+    position: relative;
+    margin-top: 20px;
+}
+
+.search textarea {
+    border: none;
+    outline: none;
+    padding: 10px 0 0 10px;
+    border-radius: 10px;
+    resize: none;
+    width: 100%;
+    height: 100%;
+}
+
+.sendBtn {
+    width: 80px;
+    height: 30px;
+    background-color: #4F80F9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.sendBtn.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.sendBtn img {
+    width: 15px;
+    margin-left: 10px;
+}
+
+.messagesBox {
+    margin-top: 20px;
+}
+
+.messageItem {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.message {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+</style>
