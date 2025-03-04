@@ -55,6 +55,14 @@
                   </el-card>
               </div>
 
+              <el-pagination
+                v-model:current-page="currentPage"
+                :page-size="pageSize"
+                :total="total"
+                layout="prev, pager, next"
+                @current-change="fetchTitles"
+              />
+
               <el-dialog v-model="dialogVisible" width="50%">
                 <div>
                   <h3>title: {{ selectedItem.title }}</h3>
@@ -107,6 +115,10 @@ setup() {
   const selected = ref('');
   const caseCount = ref(0); 
   const legislationCount = ref();
+
+  const currentPage = ref(1);
+  const pageSize = ref(9);
+  const total = ref(0);
 
   const filtersDate = [
     { year: '2025' , val: 2025 },
@@ -268,11 +280,15 @@ setup() {
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
     axios
-      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:2,page_size:10,source:"1,2,3" } })
+      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:currentPage.value, page_size:pageSize.value, source:"1,2,3" } })
       .then(response => {
         titles.value = response.titles.results.court_case;
         caseCount.value = response.titles.collection_counts.court_case
         legislationCount.value = response.titles.collection_counts.legislation
+
+        // currentPage.value = response.titles.page
+        // pageSize.value = response.titles.page_size
+        total.value = response.titles.pagination.court_case.total_pages  // todo 加个判断
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -340,7 +356,11 @@ setup() {
 
     selected,
     caseCount,
-    legislationCount
+    legislationCount,
+
+    total,
+    pageSize,
+    currentPage
   };
 }
 };
