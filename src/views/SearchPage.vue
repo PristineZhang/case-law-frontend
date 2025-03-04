@@ -285,10 +285,10 @@ setup() {
     dialogVisible.value = true;
 
     axios
-      .get(`/api/document`, { params: { doc_id: item.doc_id } })
+      .get(`/api/document`, { params: { id: item.doc_id, collection: selected.value, } })
       .then(response => {
         console.log(response)
-        content.value = response.content;
+        content.value = response.text;
       })
       .catch(error => {
         ElMessage.error('获取内容失败');
