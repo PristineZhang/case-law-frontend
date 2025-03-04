@@ -54,7 +54,7 @@
                       </div>
                   </el-card>
               </div>
-              <!-- 弹窗 -->
+
               <el-dialog v-model="dialogVisible" width="50%">
                 <div>
                   <h3>title: {{ selectedItem.title }}</h3>
@@ -67,7 +67,7 @@
 
           </div>
 
-          <!-- <div class="rankR">
+          <div class="rankR">
               <div class="rankR1">
                   <div class="rankR1Title">Case by Year</div>
                   <div id="echartsBar" style="width:90%;height: 80%;margin-top: 30px;"></div>
@@ -76,7 +76,7 @@
                   <div class="rankR1Title">Source Analytics</div>
                   <div id="echartsDoughnut" style="width:90%;height: 250px;"></div>
               </div>
-          </div> -->
+          </div>
       </div>
   </div>
 </template>

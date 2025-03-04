@@ -244,26 +244,6 @@ Mock.mock(/\/api\/document\?doc_id=\d+/, 'get', (options) => {
 });
 
 
-// todo 改成数据里有的
-Mock.mock('/api/filters', 'get', () => {
-  // Mock data for filter options
-  return {
-    time: [
-      { year: '2024' },
-      { year: '2023' },
-      { year: '2022' },
-      { year: '2020' },
-    ],
-    source: [
-      { source: 'federal court of Australia1', val: 1 },
-      { source: 'federal court of Australia2', val: 2 },
-      { source: 'federal court of Australia3', val: 3 },
-      { source: 'federal court of Australia4', val: 4 },
-    ],
-  };
-})
-
-
 Mock.mock('/api/chatbot', 'post', () => {
   // Mock data for filter options
   return {
