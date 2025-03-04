@@ -33,7 +33,7 @@
 
           <div class="rankC">
               <div class="rankC1">
-                    <div @click="selected = 'case'">
+                    <div @click="selected = 'court_case'">
                         Case  {{ caseCount }}
                     </div>
                     <div @click="selected = 'legislation'">
@@ -75,7 +75,7 @@
 
           </div>
 
-          <div class="rankR">
+          <!-- <div class="rankR">
               <div class="rankR1">
                   <div class="rankR1Title">Case by Year</div>
                   <div id="echartsBar" style="width:90%;height: 80%;margin-top: 30px;"></div>
@@ -84,7 +84,7 @@
                   <div class="rankR1Title">Source Analytics</div>
                   <div id="echartsDoughnut" style="width:90%;height: 250px;"></div>
               </div>
-          </div>
+          </div> -->
       </div>
   </div>
 </template>
@@ -117,7 +117,7 @@ setup() {
   const legislationCount = ref();
 
   const currentPage = ref(1);
-  const pageSize = ref(9);
+  const pageSize = ref(10);
   const total = ref(0);
 
   const filtersDate = [
@@ -282,13 +282,17 @@ setup() {
     axios
       .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:currentPage.value, page_size:pageSize.value, source:"1,2,3" } })
       .then(response => {
-        titles.value = response.titles.results.court_case;
-        caseCount.value = response.titles.collection_counts.court_case
-        legislationCount.value = response.titles.collection_counts.legislation
+
+        console.log(response)
+        console.log(response.results)
+
+        titles.value = response.results.court_case;
+        caseCount.value = response.collection_counts.court_case   // todo 加个判断
+        legislationCount.value = response.collection_counts.legislation
 
         // currentPage.value = response.titles.page
         // pageSize.value = response.titles.page_size
-        total.value = response.titles.pagination.court_case.total_pages  // todo 加个判断
+        total.value = response.collection_counts.court_case   // todo 加个判断
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -326,10 +330,10 @@ setup() {
   // Fetch data on mounted
   onMounted(() => {
     fetchTitles();
-    nextTick(() => {
-      getCaseByYear();
-      getAnalytics();
-    });
+    // nextTick(() => {
+    //   getCaseByYear();
+    //   getAnalytics();
+    // });
   });
 
   return {
