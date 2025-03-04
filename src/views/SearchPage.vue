@@ -32,27 +32,30 @@
           </div>
 
           <div class="rankC">
-              <!-- 可点击显示折叠内容的卡片 -->
               <div class="rankC2">
-                  <el-card v-for="(item, index) in titles" :key="index" @click="toggleCollapse(index)">
+                  <el-card v-for="(item, index) in titles" :key="index" @click="openDialog(item)">
                       <div class="cardBox">
                           <div>{{ item.title }}</div>
                           <div class="cardTime">
                               <div>time:{{ item.time }}</div>
                               <div>source:{{ item.source }}</div>
                               <div>tf:{{ item.tf }}</div>
-                          </div>
-                      </div>
-
-                      <!-- 折叠内容 -->
-                      <div v-if="isCollapsed(index)">
-                          <div class="cardContent">
-                              Highlight Sentences Highlight Sentences Highlight Sentences Highlight SentencesHighlight
-                              Sentences Highlight Sentences Highlight Sentences Highlight Sentences
+                              <div>doc_id:{{ item.doc_id }}</div>
                           </div>
                       </div>
                   </el-card>
               </div>
+              <!-- 弹窗 -->
+              <el-dialog v-model="dialogVisible" width="50%">
+                <div>
+                  <h3>title: {{ selectedItem.title }}</h3>
+                  <p>content: {{ content }}</p>
+                </div>
+                <template #footer>
+                  <el-button @click="dialogVisible = false">关闭</el-button>
+                </template>
+              </el-dialog>
+
           </div>
 
           <!-- <div class="rankR">
@@ -83,13 +86,16 @@ setup() {
   const keyword = ref('');
   const chart = ref(null);
   const chartD = ref(null);
-  const collapsedIndexes = ref([]);
   const titles = ref([]);
   const year = ref([]);
   const count = ref([]);
   const sourceAnalytics = ref([]);
   const filtersDate = ref([]);
   const filtersSource = ref([]);
+
+  const dialogVisible = ref(false);
+  const selectedItem = ref({});
+  const content = ref('');
 
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([keyword, () => checkList.time, () => checkList.source], () => {
@@ -204,6 +210,22 @@ setup() {
     }
   };
 
+  const openDialog = async (item) => {
+    selectedItem.value = item;
+    dialogVisible.value = true;
+
+    axios
+      .get(`/api/document`, { params: { doc_id: item.doc_id } })
+      .then(response => {
+        console.log(response)
+        content.value = response.content;
+      })
+      .catch(error => {
+        ElMessage.error('获取内容失败');
+      });
+
+};
+
   // Fetch titles
   const fetchTitles = () => {
     axios
@@ -256,20 +278,6 @@ setup() {
       });
   };
 
-  // Toggle card collapse state
-  const toggleCollapse = (index) => {
-    const i = collapsedIndexes.value.indexOf(index);
-    if (i === -1) {
-      collapsedIndexes.value.push(index); // Add to collapsed list
-    } else {
-      collapsedIndexes.value.splice(i, 1); // Remove from collapsed list
-    }
-  };
-
-  // Check if card is collapsed
-  const isCollapsed = (index) => {
-    return collapsedIndexes.value.includes(index);
-  };
 
   // Fetch data on mounted
   onMounted(() => {
@@ -286,7 +294,6 @@ setup() {
     keyword,
     chart,
     chartD,
-    collapsedIndexes,
     titles,
     year,
     count,
@@ -299,8 +306,11 @@ setup() {
     getCaseByYear,
     getAnalytics,
     getFilters,
-    toggleCollapse,
-    isCollapsed
+    
+    dialogVisible,
+    selectedItem,
+    content,
+    openDialog,
   };
 }
 };

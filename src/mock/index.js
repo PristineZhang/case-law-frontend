@@ -231,6 +231,19 @@ Mock.mock('/api/source-analytics', 'get', () => {
   };
 });
 
+
+
+Mock.mock(/\/api\/document\?doc_id=\d+/, 'get', (options) => {
+  // 解析 URL 参数
+  const url = new URL(options.url, window.location.origin);
+  const docId = url.searchParams.get('doc_id');
+
+  return {
+    content: `this is the content of document ${docId}`
+  };
+});
+
+
 // todo 改成数据里有的
 Mock.mock('/api/filters', 'get', () => {
   // Mock data for filter options
