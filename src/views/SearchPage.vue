@@ -280,23 +280,29 @@ setup() {
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
     axios
-      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:currentPage.value, page_size:pageSize.value, source:"1,2,3" } })
+      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:currentPage.value, page_size:pageSize.value, source:"" } })
       .then(response => {
 
         console.log(response)
+        console.log(selected.value === "legislation")
         console.log(response.results)
 
-        // titles.value = response.results.court_case;
-
         titles.value = [];  // 先清空，避免 Vue 误判无变化
-        titles.value = [...response.results.court_case];  // 重新赋值
 
-        caseCount.value = response.collection_counts.court_case   // todo 加个判断
-        legislationCount.value = response.collection_counts.legislation
+
+        if (selected.value === "legislation") {
+          legislationCount.value = response.collection_counts.legislation;
+          total.value = response.collection_counts.legislation;
+          titles.value = [...response.results.legislation];
+        } else {
+          caseCount.value = response.collection_counts.court_case;
+          total.value = response.collection_counts.court_case;
+          titles.value = [...response.results.court_case];
+        }
+        
 
         // currentPage.value = response.titles.page
         // pageSize.value = response.titles.page_size
-        total.value = response.collection_counts.court_case   // todo 加个判断
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
