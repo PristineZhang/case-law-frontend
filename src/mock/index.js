@@ -1,7 +1,22 @@
 import Mock from 'mockjs';
 
 
-Mock.mock('/api/titles', 'get', () => {
+Mock.mock(/\/api\/rank_retrieve/, 'get', (options) => {
+    // 解析 URL 参数
+    const url = new URL(options.url, window.location.origin);
+    const query = url.searchParams.get("query") || "";
+    const collection = url.searchParams.get("collection") || "default_collection";
+    const page = parseInt(url.searchParams.get("page")) || 1;
+    const page_size = parseInt(url.searchParams.get("page_size")) || 10;
+    const source = url.searchParams.get("source") || "all";
+  
+    // Console 里打印传入的参数
+    console.log(" Mock API 被调用！");
+    console.log("query:", query);
+    console.log("collection:", collection);
+    console.log("page:", page);
+    console.log("page_size:", page_size);
+    console.log("source:", source);
  
   const titles = 
   

@@ -268,7 +268,7 @@ setup() {
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
     axios
-      .get('/api/titles')
+      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:2,page_size:10,source:"1,2,3" } })
       .then(response => {
         titles.value = response.titles.results.court_case;
         caseCount.value = response.titles.collection_counts.court_case
