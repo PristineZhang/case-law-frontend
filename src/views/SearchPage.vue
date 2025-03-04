@@ -286,7 +286,11 @@ setup() {
         console.log(response)
         console.log(response.results)
 
-        titles.value = response.results.court_case;
+        // titles.value = response.results.court_case;
+
+        titles.value = [];  // 先清空，避免 Vue 误判无变化
+        titles.value = [...response.results.court_case];  // 重新赋值
+
         caseCount.value = response.collection_counts.court_case   // todo 加个判断
         legislationCount.value = response.collection_counts.legislation
 
