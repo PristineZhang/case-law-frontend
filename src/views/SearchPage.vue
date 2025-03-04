@@ -32,6 +32,15 @@
           </div>
 
           <div class="rankC">
+              <div class="rankC1">
+                    <div @click="selected = 'case'">
+                        Case  {{ caseCount }}
+                    </div>
+                    <div @click="selected = 'legislation'">
+                        Legislation  {{ legislationCount }}
+                    </div>      
+              </div>
+
               <div class="rankC2">
                   <el-card v-for="(item, index) in titles" :key="index" @click="openDialog(item)">
                       <div class="cardBox">
@@ -95,6 +104,10 @@ setup() {
   const selectedItem = ref({});
   const content = ref('');
 
+  const selected = ref('');
+  const caseCount = ref(0); 
+  const legislationCount = ref();
+
   const filtersDate = [
     { year: '2025' , val: 2025 },
     { year: '2024' , val: 2024 },
@@ -121,6 +134,12 @@ setup() {
     console.log(checkList.source)
   });
 
+    // Watch for changes in selected
+    watch([selected], () => {
+      fetchTitles();
+      console.log("选择了哪种筛选模式")
+      console.log(selected)
+  });
 
   // Initialize bar chart
   const echartsBarInit = () => {
@@ -252,6 +271,8 @@ setup() {
       .get('/api/titles')
       .then(response => {
         titles.value = response.titles.results.court_case;
+        caseCount.value = response.titles.collection_counts.court_case
+        legislationCount.value = response.titles.collection_counts.legislation
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -316,6 +337,10 @@ setup() {
     selectedItem,
     content,
     openDialog,
+
+    selected,
+    caseCount,
+    legislationCount
   };
 }
 };
@@ -380,6 +405,9 @@ setup() {
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
 }
 
 .rankC1 div span:nth-child(1) {
