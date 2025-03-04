@@ -24,7 +24,7 @@
                   </div>
                   <div class="timeItem">
                       <el-checkbox-group v-model="checkList.source">
-                          <el-checkbox :label="item.source" :value="item.val" v-for="(item, index) in filtersSource"
+                          <el-checkbox :label="item.source" v-for="(item, index) in filteredSource"
                               :key="index" />
                       </el-checkbox-group>
                   </div>
@@ -33,10 +33,10 @@
 
           <div class="rankC">
               <div class="rankC1">
-                    <div @click="selected = 'court_case'">
+                    <div @click="changeSelection('court_case')">
                         Case  {{ caseCount }}
                     </div>
-                    <div @click="selected = 'legislation'">
+                    <div @click="changeSelection('legislation')">
                         Legislation  {{ legislationCount }}
                     </div>      
               </div>
@@ -92,7 +92,7 @@
 <script>
 import * as echarts from 'echarts';
 import axios from '../utils/axios';
-import { ref, reactive, onMounted, watch, nextTick } from 'vue';
+import { ref, reactive, onMounted, watch, nextTick, computed } from 'vue';
 
 export default {
 setup() {
@@ -112,7 +112,7 @@ setup() {
   const selectedItem = ref({});
   const content = ref('');
 
-  const selected = ref('');
+  const selected = ref('court_case');
   const caseCount = ref(0); 
   const legislationCount = ref();
 
@@ -130,12 +130,32 @@ setup() {
   ];
 
 
-  const filtersSource = [
-  { source: 'federal court of Australia1', val: 1 },
-  { source: 'federal court of Australia2', val: 2 },
-  { source: 'federal court of Australia3', val: 3 },
-  { source: 'federal court of Australia4', val: 4 },
-  ];
+  const courtSource = ref([
+  { source: 'federal_court_of_australia'},
+  { source: 'high_court_of_australia'},
+  { source: 'nsw_caselaw'},
+  ]);
+
+  const legislationSource = ref([
+  { source: 'federal_register_of_legislation'},
+  { source: 'nsw_legislation'},
+  { source: 'queensland_legislation'},
+  { source: 'western_australian_legislation'},
+  { source: 'south_australian_legislation'},
+  { source: 'tasmanian_legislation'},
+  ]);
+
+  // 计算属性，动态选择数据源
+  const filteredSource = computed(() => {
+    return selected.value === "legislation" ? legislationSource.value : courtSource.value;
+  });
+
+
+  const changeSelection = (type) => {
+    selected.value = type;
+    currentPage.value = 1
+    checkList.source = [];
+};
 
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([keyword, () => checkList.time, () => checkList.source], () => {
@@ -280,7 +300,15 @@ setup() {
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
     axios
-      .get('/api/rank_retrieve', { params: { query:keyword.value, collection:selected.value, page:currentPage.value, page_size:pageSize.value, source:"" } })
+      .get('/api/rank_retrieve', { 
+        params: { 
+            query:keyword.value, 
+            collection:selected.value, 
+            page:currentPage.value, 
+            page_size:pageSize.value, 
+            source: checkList.source.length ? checkList.source.join(",") : "" 
+          } 
+      })
       .then(response => {
 
         console.log(response)
@@ -356,7 +384,9 @@ setup() {
     count,
     sourceAnalytics,
     filtersDate,
-    filtersSource,
+
+    filteredSource,
+
     echartsBarInit,
     echartDoughnutInit,
     fetchTitles,
@@ -374,7 +404,9 @@ setup() {
 
     total,
     pageSize,
-    currentPage
+    currentPage,
+
+    changeSelection
   };
 }
 };
