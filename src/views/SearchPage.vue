@@ -348,6 +348,8 @@ setup() {
   width: 100%;
   height: 60px;
   background-color: #fff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -358,6 +360,8 @@ setup() {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .rankL_title {
@@ -406,6 +410,9 @@ setup() {
   width: 100%;
   margin-top: 20px;
   cursor: pointer;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
 }
 
 .cardBox {
@@ -435,6 +442,7 @@ setup() {
   background-color: #fff;
   border-radius: 5px;
   padding: 20px 0 0 20px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 
 .rankR1Title {
@@ -443,8 +451,9 @@ setup() {
 
 .rankR2 {
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 20px 0 0 20px;
   margin-top: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
 </style>
