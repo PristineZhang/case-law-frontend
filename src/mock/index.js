@@ -3,48 +3,210 @@ import Mock from 'mockjs';
 
 Mock.mock('/api/titles', 'get', () => {
  
-  const titles = {
-    title:[
-      {
-        id:"1",
-        title: 'Case Title 1',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-      {
-        id:"2",
-        title: 'Case Title 2',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-      {
-        id:"3",
-        title: 'Case Title 3',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-      {
-        id:"4",
-        title: 'Case Title 4',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-      {
-        id:"5",
-        title: 'Case Title 5',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-      {
-        id:"6",
-        title: 'Case Title 6',
-        date: '2020-11-22',
-        source: 'federal court of Australia',
-      },
-    ],
-    case:"879",
-    legislation:"230"
-  };
+  const titles = 
+  
+  {
+    "cache_info": {
+        "filter_cache_hits": [],
+        "raw_cache_hits": []
+    },
+    "collection_counts": {
+        "court_case": 50381,
+        "legislation": 9468
+    },
+    "page": 1,
+    "page_size": 10,
+    "pagination": {
+        "court_case": {
+            "current_page": 1,
+            "has_next": true,
+            "has_prev": false,
+            "page_size": 10,
+            "total_docs": 50381,
+            "total_pages": 5039
+        },
+        "legislation": {
+            "current_page": 1,
+            "has_next": true,
+            "has_prev": false,
+            "page_size": 10,
+            "total_docs": 9468,
+            "total_pages": 947
+        }
+    },
+    "query": "law",
+    "result_count": {
+        "filtered": 59849,
+        "total": 59849
+    },
+    "results": {
+        "court_case": [
+            {
+                "doc_id": "2126",
+                "score": 1.8767998159148305,
+                "source": "federal_court_of_australia",
+                "tf": 839,
+                "time": "1999",
+                "title": "Nulyarimma v Thompson [1999] FCA 1192"
+            },
+            {
+                "doc_id": "12478",
+                "score": 1.871976589942815,
+                "source": "federal_court_of_australia",
+                "tf": 174,
+                "time": "2013",
+                "title": "Australian Competition and Consumer Commission v P. T. Garuda Indonesia (No 9) [2013] FCA 323"
+            },
+            {
+                "doc_id": "64762",
+                "score": 1.8710396380147811,
+                "source": "nsw_caselaw",
+                "tf": 420,
+                "time": "2020",
+                "title": "Council of the Law Society of New South Wales v Taylor [2020] NSWCATOD 55"
+            },
+            {
+                "doc_id": "781",
+                "score": 1.8704627958248126,
+                "source": "federal_court_of_australia",
+                "tf": 103,
+                "time": "2000",
+                "title": "Matthews v Australian Securities Commission & Investments Commission [2000] FCA 288"
+            },
+            {
+                "doc_id": "6895",
+                "score": 1.8700376303557003,
+                "source": "federal_court_of_australia",
+                "tf": 76,
+                "time": "1997",
+                "title": "Bond, Alan v Minister for Justice of the Commonwealth of Australia Bond, Alan v Attorney-General of the Commonwealth of Australia [1997] FCA 91"
+            },
+            {
+                "doc_id": "24528",
+                "score": 1.8695508006516357,
+                "source": "federal_court_of_australia",
+                "tf": 339,
+                "time": "2017",
+                "title": "Trina Solar (US), Inc v Jasmin Solar Pty Ltd [2017] FCAFC 6"
+            },
+            {
+                "doc_id": "6609",
+                "score": 1.8690168113727288,
+                "source": "federal_court_of_australia",
+                "tf": 156,
+                "time": "2012",
+                "title": "Stewart v Australian Crime Commission [2012] FCAFC 151"
+            },
+            {
+                "doc_id": "61363",
+                "score": 1.8684941600788734,
+                "source": "nsw_caselaw",
+                "tf": 105,
+                "time": "2003",
+                "title": "Dyer v Dyno Nobel Asia Pacific Limited formerly Dyno Wesfarmers Limited Knuckey & 3 Ors v Dyno Nobel Asia Pacific Limited formerly Dyno Wesfarmers Limited [2003] NSWSC 213"
+            },
+            {
+                "doc_id": "66872",
+                "score": 1.8684606018501644,
+                "source": "nsw_caselaw",
+                "tf": 100,
+                "time": "2020",
+                "title": "Council of the Law Society of NSW v Brincat [2020] NSWCATOD 108"
+            },
+            {
+                "doc_id": "52364",
+                "score": 1.868088390468015,
+                "source": "nsw_caselaw",
+                "tf": 145,
+                "time": "2023",
+                "title": "Council of the Law Society of New South Wales v Feng [2023] NSWCATOD 129"
+            }
+        ],
+        "legislation": [
+            {
+                "doc_id": "5792",
+                "score": 3.194204456451531,
+                "source": "queensland_legislation",
+                "tf": 116,
+                "time": "2022",
+                "title": "Co-operatives National Law Regulation 2020 (Qld)"
+            },
+            {
+                "doc_id": "15833",
+                "score": 3.190364657148663,
+                "source": "federal_register_of_legislation",
+                "tf": 160,
+                "time": "1998",
+                "title": "Commonwealth Places (Mirror Taxes) Act 1998 (Cth)"
+            },
+            {
+                "doc_id": "9602",
+                "score": 3.190015527123341,
+                "source": "federal_register_of_legislation",
+                "tf": 148,
+                "time": "2011",
+                "title": "Australian Energy Market Amendment (National Energy Retail Law) Act 2011 (Cth)"
+            },
+            {
+                "doc_id": "23448",
+                "score": 3.1892032547919604,
+                "source": "federal_register_of_legislation",
+                "tf": 212,
+                "time": "2019",
+                "title": "Industrial Chemicals (Consequential Amendments and Transitional Provisions) Act 2019 (Cth)"
+            },
+            {
+                "doc_id": "22032",
+                "score": 3.188171892731641,
+                "source": "federal_register_of_legislation",
+                "tf": 562,
+                "time": "2001",
+                "title": "Corporations (Repeals, Consequentials and Transitionals) Act 2001 (Cth)"
+            },
+            {
+                "doc_id": "6164",
+                "score": 3.1873082719540857,
+                "source": "tasmanian_legislation",
+                "tf": 367,
+                "time": "2019",
+                "title": "Corporations (Tasmania) Act 1990 (Tas)"
+            },
+            {
+                "doc_id": "2099",
+                "score": 3.185876852477692,
+                "source": "western_australian_legislation",
+                "tf": 432,
+                "time": "1990",
+                "title": "Corporations (Western Australia) Act 1990 (WA)"
+            },
+            {
+                "doc_id": "4200",
+                "score": 3.185249759688593,
+                "source": "queensland_legislation",
+                "tf": 365,
+                "time": "2020",
+                "title": "Corporations (Queensland) Act 1990 (Qld)"
+            },
+            {
+                "doc_id": "31267",
+                "score": 3.1851582691298623,
+                "source": "south_australian_legislation",
+                "tf": 413,
+                "time": "2021",
+                "title": "Corporations (South Australia) Act 1990 (SA)"
+            },
+            {
+                "doc_id": "11152",
+                "score": 3.184636146999951,
+                "source": "queensland_legislation",
+                "tf": 500,
+                "time": "2002",
+                "title": "Community Services Legislation Amendment Bill 2002 (Qld)"
+            }
+        ]
+    },
+    "status": "success"
+}
 
   // Return the filtered titles
   return { titles };

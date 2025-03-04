@@ -32,25 +32,15 @@
           </div>
 
           <div class="rankC">
-              <!-- <div class="rankC1">
-                  <div>
-                      <span>Case</span>
-                      <span>{{ case }}</span>
-                  </div>
-                  <div>
-                      <span>Legislation</span>
-                      <span>{{ legislation }}</span>
-                  </div>
-              </div> -->
-
               <!-- 可点击显示折叠内容的卡片 -->
               <div class="rankC2">
-                  <el-card v-for="(item, index) in filteredTitles" :key="index" @click="toggleCollapse(index)">
+                  <el-card v-for="(item, index) in titles" :key="index" @click="toggleCollapse(index)">
                       <div class="cardBox">
                           <div>{{ item.title }}</div>
                           <div class="cardTime">
-                              <div>{{ item.date }}</div>
-                              <div>{{ item.source }}</div>
+                              <div>time:{{ item.time }}</div>
+                              <div>source:{{ item.source }}</div>
+                              <div>tf:{{ item.tf }}</div>
                           </div>
                       </div>
 
@@ -65,7 +55,7 @@
               </div>
           </div>
 
-          <div class="rankR">
+          <!-- <div class="rankR">
               <div class="rankR1">
                   <div class="rankR1Title">Case by Year</div>
                   <div id="echartsBar" style="width:90%;height: 80%;margin-top: 30px;"></div>
@@ -74,7 +64,7 @@
                   <div class="rankR1Title">Source Analytics</div>
                   <div id="echartsDoughnut" style="width:90%;height: 250px;"></div>
               </div>
-          </div>
+          </div> -->
       </div>
   </div>
 </template>
@@ -91,13 +81,10 @@ setup() {
     source: []
   });
   const keyword = ref('');
-  const filteredTitles = ref([]);
   const chart = ref(null);
   const chartD = ref(null);
   const collapsedIndexes = ref([]);
   const titles = ref([]);
-  const caseData = ref('');
-  const legislation = ref('');
   const year = ref([]);
   const count = ref([]);
   const sourceAnalytics = ref([]);
@@ -106,19 +93,9 @@ setup() {
 
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([keyword, () => checkList.time, () => checkList.source], () => {
-    filterTitles();
+    titles();
   });
 
-  // Filter titles based on conditions
-  const filterTitles = () => {
-    filteredTitles.value = titles.value.filter(item => {
-      const matchesKeyword = item.title.toLowerCase().includes(keyword.value.toLowerCase());
-      const matchesTime = checkList.time.length === 0 || checkList.time.includes(item.date.split("-")[0]);
-      const matchesSource = checkList.source.length === 0 || checkList.source.includes(item.source);
-
-      return matchesKeyword && matchesTime && matchesSource;
-    });
-  };
 
   // Initialize bar chart
   const echartsBarInit = () => {
@@ -232,10 +209,7 @@ setup() {
     axios
       .get('/api/titles')
       .then(response => {
-        titles.value = response.titles.title;
-        caseData.value = response.titles.case;
-        legislation.value = response.titles.legislation;
-        filteredTitles.value = titles.value;
+        titles.value = response.titles.results.court_case;
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -310,19 +284,15 @@ setup() {
   return {
     checkList,
     keyword,
-    filteredTitles,
     chart,
     chartD,
     collapsedIndexes,
     titles,
-    caseData,
-    legislation,
     year,
     count,
     sourceAnalytics,
     filtersDate,
     filtersSource,
-    filterTitles,
     echartsBarInit,
     echartDoughnutInit,
     fetchTitles,
