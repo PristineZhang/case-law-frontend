@@ -12,7 +12,7 @@
                   </div>
                   <div class="timeItem">
                       <el-checkbox-group v-model="checkList.time">
-                          <el-checkbox :label="item.year" :value="item.year" v-for="(item, index) in filtersDate"
+                          <el-checkbox :label="item.year" :value="item.val" v-for="(item, index) in filtersDate"
                               :key="index" />
 
                       </el-checkbox-group>
@@ -90,16 +90,35 @@ setup() {
   const year = ref([]);
   const count = ref([]);
   const sourceAnalytics = ref([]);
-  const filtersDate = ref([]);
-  const filtersSource = ref([]);
 
   const dialogVisible = ref(false);
   const selectedItem = ref({});
   const content = ref('');
 
+  const filtersDate = [
+    { year: '2025' , val: 2025 },
+    { year: '2024' , val: 2024 },
+    { year: '2023' , val: 2023 },
+    { year: '2022' , val: 2022 },
+    { year: '2021' , val: 2021 },
+    { year: '2020及以前' , val: 2020 },
+  ];
+
+
+  const filtersSource = [
+  { source: 'federal court of Australia1', val: 1 },
+  { source: 'federal court of Australia2', val: 2 },
+  { source: 'federal court of Australia3', val: 3 },
+  { source: 'federal court of Australia4', val: 4 },
+  ];
+
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([keyword, () => checkList.time, () => checkList.source], () => {
-    titles();
+    fetchTitles();
+    console.log("time")
+    console.log(checkList.time)
+    console.log("source")
+    console.log(checkList.source)
   });
 
 
@@ -228,6 +247,7 @@ setup() {
 
   // Fetch titles
   const fetchTitles = () => {
+    console.log("刷新页面，重新请求")
     axios
       .get('/api/titles')
       .then(response => {
@@ -265,24 +285,10 @@ setup() {
       });
   };
 
-  // Fetch filter data
-  const getFilters = () => {
-    axios
-      .get('/api/filters')
-      .then(response => {
-        filtersDate.value = response.time;
-        filtersSource.value = response.source;
-      })
-      .catch(error => {
-        console.error('There was an error fetching filter data:', error);
-      });
-  };
-
 
   // Fetch data on mounted
   onMounted(() => {
     fetchTitles();
-    getFilters();
     nextTick(() => {
       getCaseByYear();
       getAnalytics();
@@ -305,7 +311,6 @@ setup() {
     fetchTitles,
     getCaseByYear,
     getAnalytics,
-    getFilters,
     
     dialogVisible,
     selectedItem,
