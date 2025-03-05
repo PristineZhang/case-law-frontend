@@ -5,7 +5,24 @@
           <el-button type="primary" @click="fetchTitles">
             Search
           </el-button>
+
+          <el-button type="primary" @click="toggleHiddenInput">
+            展开临近搜索
+          </el-button>
       </div>
+
+      <div class="search">
+            <div v-show="showHiddenInput" style="display: flex; flex-direction: row; gap: 5px; margin-top: 5px;">
+              <el-input v-model="distance" placeholder="Distance (e.g., 15)" style="width: 50%;" />
+              <el-input v-model="term1" placeholder="Term 1" style="width: 50%;" />
+              <el-input v-model="term2" placeholder="Term 2" style="width: 50%;" />
+
+              <el-button type="success" @click="performProximitySearch">
+                Proximity Search
+              </el-button>
+            </div>
+      </div>
+
       <div class="rank">
           <div class="rankL">
               <div class="rankL_title">Filter</div>
@@ -122,6 +139,15 @@ setup() {
   const currentPage = ref(1);
   const pageSize = ref(10);
   const total = ref(0);
+
+  const showHiddenInput = ref(false);
+  const toggleHiddenInput = () => {
+      showHiddenInput.value = !showHiddenInput.value;
+    };
+
+  const distance = ref("");
+  const term1 = ref("");
+  const term2 = ref("");
 
   const filtersDate = [
     { year: '2025' , val: 2025 },
@@ -299,6 +325,18 @@ setup() {
 
 };
 
+  const performProximitySearch = () => {
+    if (!distance.value || !term1.value || !term2.value) {
+      console.warn("All fields must be filled!");
+      return;
+    }
+
+    const query = `#${distance.value}(${term1.value},${term2.value})`;
+
+    console.log(query)
+    // fetchTitles(query);
+  };
+
   // Fetch titles
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
@@ -400,7 +438,16 @@ setup() {
     pageSize,
     currentPage,
 
-    changeSelection
+    changeSelection,
+
+    showHiddenInput,
+    toggleHiddenInput,
+
+
+    distance,
+    term1,
+    term2,
+    performProximitySearch,
   };
 }
 };
