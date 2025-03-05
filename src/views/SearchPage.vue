@@ -1,18 +1,18 @@
 <template>
   <div>
       <div class="search">
-          <el-input v-model="keyword" style="width: 50%" placeholder="Search product,items" :suffix-icon="Search" @keyup.enter="fetchTitles"/>
+          <el-input v-model="keyword" style="width: 50%" placeholder="Search product,items" :suffix-icon="Search" @keyup.enter="fetchTitles" :disabled="isProximityMode"/>
           <el-button type="primary" @click="fetchTitles">
             Search
           </el-button>
 
-          <el-button type="primary" @click="toggleHiddenInput">
-            展开临近搜索
+          <el-button type="primary" @click="toggleSearchMode">
+            {{ isProximityMode ? "切换到普通搜索" : "展开临近搜索" }}
           </el-button>
       </div>
 
       <div class="search">
-            <div v-show="showHiddenInput" style="display: flex; flex-direction: row; gap: 5px; margin-top: 5px;">
+            <div v-show="isProximityMode" style="display: flex; flex-direction: row; gap: 5px; margin-top: 5px;">
               <el-input v-model="distance" placeholder="Distance (e.g., 15)" style="width: 50%;" />
               <el-input v-model="term1" placeholder="Term 1" style="width: 50%;" />
               <el-input v-model="term2" placeholder="Term 2" style="width: 50%;" />
@@ -140,9 +140,19 @@ setup() {
   const pageSize = ref(10);
   const total = ref(0);
 
-  const showHiddenInput = ref(false);
-  const toggleHiddenInput = () => {
-      showHiddenInput.value = !showHiddenInput.value;
+  const isProximityMode = ref(false);
+  const toggleSearchMode = () => {
+      isProximityMode.value = !isProximityMode.value;
+
+      if (isProximityMode.value) {
+        // 进入临近搜索模式，清空主输入框 & 禁用
+        keyword.value = "";
+      } else {
+        // 进入普通搜索模式，清空临近搜索字段 & 隐藏输入框
+        distance.value = "";
+        term1.value = "";
+        term2.value = "";
+      }
     };
 
   const distance = ref("");
@@ -330,20 +340,23 @@ setup() {
       console.warn("All fields must be filled!");
       return;
     }
-
-    const query = `#${distance.value}(${term1.value},${term2.value})`;
-
-    console.log(query)
-    // fetchTitles(query);
+    fetchTitles();
   };
 
   // Fetch titles
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
+
+    const query = isProximityMode.value 
+    ? `#${distance.value}(${term1.value},${term2.value})`
+    : keyword.value;
+
+    console.log(query)
+
     axios
       .get('/api/rank_retrieve', { 
         params: { 
-            query:keyword.value, 
+            query:query, 
             collection:selected.value, 
             page:currentPage.value, 
             page_size:pageSize.value, 
@@ -440,8 +453,8 @@ setup() {
 
     changeSelection,
 
-    showHiddenInput,
-    toggleHiddenInput,
+    isProximityMode,
+    toggleSearchMode,
 
 
     distance,
