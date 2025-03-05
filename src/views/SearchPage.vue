@@ -351,7 +351,10 @@ setup() {
 
   const performProximitySearch = () => {
     if (!distance.value || !term1.value || !term2.value) {
-      console.warn("All fields must be filled!");
+      ElMessage({
+        message: 'All fields must be filled in for the proximity search.',
+        type: 'warning'
+      });
       return;
     }
     fetchTitles();
@@ -364,7 +367,13 @@ setup() {
     ? `#${distance.value}(${term1.value},${term2.value})`
     : keyword.value;
 
-    console.log(query)
+    if (!query) {
+        ElMessage({
+            message: "Search query cannot be empty for the boolean search.",
+            type: "warning",
+        });
+        return;
+    }
 
     axios
       .get('/api/rank_retrieve', { 
