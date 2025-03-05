@@ -1,19 +1,23 @@
 <template>
   <div>
       <div class="search" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
-          <input v-model="keyword" class="search-input" placeholder="Search product, items" :suffix-icon="Search" @keyup.enter="fetchTitles" :disabled="isProximityMode"/>
+          <input v-model="keyword" 
+            class="search-input" 
+            placeholder="Search using keywords or phrases (use AND, OR, NOT; phrases in quotes)"  
+            @keyup.enter="fetchTitles" 
+            :disabled="isProximityMode"/>
           <button class="btn-primary" @click="fetchTitles">
             Search
           </button>
 
           <button class="btn-primary" @click="toggleSearchMode">
-            {{ isProximityMode ? "切换到普通搜索" : "展开临近搜索" }}
+            {{ isProximityMode ? "Switch to Boolean Search" : "Enable Proximity Search" }}
           </button>
       </div>
 
       <div class="search">
             <div v-show="isProximityMode" style="display: flex; align-items: center; gap: 10px;">
-              <input v-model="distance" placeholder="Distance (e.g., 15)" class="search-input" />
+              <input v-model="distance" placeholder="Distance" class="search-input" />
               <input v-model="term1" placeholder="Term 1" class="search-input" />
               <input v-model="term2" placeholder="Term 2" class="search-input" />
 
