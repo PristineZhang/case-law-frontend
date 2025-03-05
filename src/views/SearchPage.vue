@@ -1,7 +1,10 @@
 <template>
   <div>
       <div class="search">
-          <el-input v-model="keyword" style="width: 50%" placeholder="Search product,items" :suffix-icon="Search" />
+          <el-input v-model="keyword" style="width: 50%" placeholder="Search product,items" :suffix-icon="Search" @keyup.enter="fetchTitles"/>
+          <el-button type="primary" @click="fetchTitles">
+            Search
+          </el-button>
       </div>
       <div class="rank">
           <div class="rankL">
@@ -158,7 +161,7 @@ setup() {
 };
 
   // Watch for changes in keyword, checkList.time, checkList.source
-  watch([keyword, () => checkList.time, () => checkList.source], () => {
+  watch([() => checkList.time, () => checkList.source], () => {
     fetchTitles();
     console.log("time")
     console.log(checkList.time)
@@ -362,15 +365,8 @@ setup() {
       });
   };
 
-
-
-  // Fetch data on mounted
   onMounted(() => {
-    fetchTitles();
-    // nextTick(() => {
-    //   getCaseByYear();
-    //   getAnalytics();
-    // });
+    // fetchTitles();
   });
 
   return {
