@@ -54,10 +54,10 @@
           <div class="rankC">
               <div class="rankC1">
                     <div @click="changeSelection('court_case')">
-                        Case  {{ caseCount }}
+                        Case    {{ caseCount > 0 ? caseCount : '' }}
                     </div>
                     <div @click="changeSelection('legislation')">
-                        Legislation  {{ legislationCount }}
+                        Legislation    {{ legislationCount > 0 ? legislationCount : '' }}
                     </div>      
               </div>
 
@@ -195,6 +195,15 @@ setup() {
     selected.value = type;
     currentPage.value = 1
     checkList.source = [];
+
+    if (selected.value === "legislation") {
+      caseCount.value = 0
+    } else {
+      legislationCount.value = 0
+    }
+
+    console.log("casecount:" + caseCount)
+    console.log("legislationcount:" + legislationCount)
 };
 
   // Watch for changes in keyword, checkList.time, checkList.source
