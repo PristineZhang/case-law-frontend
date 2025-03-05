@@ -199,17 +199,11 @@ setup() {
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([() => checkList.time, () => checkList.source], () => {
     fetchTitles();
-    console.log("time")
-    console.log(checkList.time)
-    console.log("source")
-    console.log(checkList.source)
   });
 
     // Watch for changes in selected
     watch([selected], () => {
       fetchTitles();
-      console.log("选择了哪种筛选模式")
-      console.log(selected)
   });
 
   // Initialize bar chart
@@ -326,7 +320,6 @@ setup() {
     axios
       .get(`/api/document`, { params: { id: item.doc_id, collection: selected.value, } })
       .then(response => {
-        console.log(response)
         content.value = response.text;
       })
       .catch(error => {
@@ -343,7 +336,6 @@ setup() {
     fetchTitles();
   };
 
-  // Fetch titles
   const fetchTitles = () => {
     console.log("刷新页面，重新请求")
 
@@ -366,8 +358,6 @@ setup() {
       .then(response => {
 
         console.log(response)
-        console.log(selected.value === "legislation")
-        console.log(response.results)
 
         titles.value = [];  // 先清空，避免 Vue 误判无变化
 
@@ -455,7 +445,6 @@ setup() {
 
     isProximityMode,
     toggleSearchMode,
-
 
     distance,
     term1,
