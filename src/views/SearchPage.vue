@@ -76,6 +76,7 @@
               </div>
 
               <el-pagination
+                class="custom-pagination"
                 v-model:current-page="currentPage"
                 :page-size="pageSize"
                 :total="total"
@@ -509,6 +510,16 @@ setup() {
   cursor: pointer;
   font-size: 14px;
   white-space: nowrap;
+}
+
+.custom-pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.custom-pagination ::v-deep(.el-pager li) {
+  color: #2d43d7
 }
 
 .rankL {
