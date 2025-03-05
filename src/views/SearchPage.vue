@@ -75,7 +75,7 @@
 
           </div>
 
-          <!-- <div class="rankR">
+          <div class="rankR">
               <div class="rankR1">
                   <div class="rankR1Title">Case by Year</div>
                   <div id="echartsBar" style="width:90%;height: 80%;margin-top: 30px;"></div>
@@ -84,7 +84,7 @@
                   <div class="rankR1Title">Source Analytics</div>
                   <div id="echartsDoughnut" style="width:90%;height: 250px;"></div>
               </div>
-          </div> -->
+          </div>
       </div>
   </div>
 </template>
@@ -317,20 +317,31 @@ setup() {
 
         titles.value = [];  // 先清空，避免 Vue 误判无变化
 
+        let sourceData = null;
 
         if (selected.value === "legislation") {
           legislationCount.value = response.collection_counts.legislation;
           total.value = response.collection_counts.legislation;
           titles.value = [...response.results.legislation];
+          sourceData = response.source_distributions.legislation
         } else {
           caseCount.value = response.collection_counts.court_case;
           total.value = response.collection_counts.court_case;
           titles.value = [...response.results.court_case];
+          sourceData = response.source_distributions.court_case
         }
-        
-
-        // currentPage.value = response.titles.page
-        // pageSize.value = response.titles.page_size
+          
+        // 适配 ECharts
+        if (sourceData) {
+          sourceData = Object.entries(sourceData).map(([key, value]) => ({
+            name: key
+              .replace(/_/g, ' ') // 替换下划线为空格
+              .replace(/\b\w/g, char => char.toUpperCase()), // 首字母大写
+            value: value
+          }));
+        }
+        sourceAnalytics.value = sourceData;
+        echartDoughnutInit();
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -351,18 +362,6 @@ setup() {
       });
   };
 
-  // Fetch analytics data
-  const getAnalytics = () => {
-    axios
-      .get('/api/source-analytics')
-      .then(response => {
-        sourceAnalytics.value = response.sourceAnalytics;
-        echartDoughnutInit();
-      })
-      .catch(error => {
-        console.error('There was an error fetching analytics data:', error);
-      });
-  };
 
 
   // Fetch data on mounted
@@ -391,7 +390,6 @@ setup() {
     echartDoughnutInit,
     fetchTitles,
     getCaseByYear,
-    getAnalytics,
     
     dialogVisible,
     selectedItem,
