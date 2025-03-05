@@ -1,25 +1,25 @@
 <template>
   <div>
-      <div class="search">
-          <el-input v-model="keyword" style="width: 50%" placeholder="Search product,items" :suffix-icon="Search" @keyup.enter="fetchTitles" :disabled="isProximityMode"/>
-          <el-button type="primary" @click="fetchTitles">
+      <div class="search" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
+          <input v-model="keyword" class="search-input" placeholder="Search product, items" :suffix-icon="Search" @keyup.enter="fetchTitles" :disabled="isProximityMode"/>
+          <button class="btn-primary" @click="fetchTitles">
             Search
-          </el-button>
+          </button>
 
-          <el-button type="primary" @click="toggleSearchMode">
+          <button class="btn-primary" @click="toggleSearchMode">
             {{ isProximityMode ? "切换到普通搜索" : "展开临近搜索" }}
-          </el-button>
+          </button>
       </div>
 
       <div class="search">
-            <div v-show="isProximityMode" style="display: flex; flex-direction: row; gap: 5px; margin-top: 5px;">
-              <el-input v-model="distance" placeholder="Distance (e.g., 15)" style="width: 50%;" />
-              <el-input v-model="term1" placeholder="Term 1" style="width: 50%;" />
-              <el-input v-model="term2" placeholder="Term 2" style="width: 50%;" />
+            <div v-show="isProximityMode" style="display: flex; align-items: center; gap: 10px;">
+              <input v-model="distance" placeholder="Distance (e.g., 15)" class="search-input" />
+              <input v-model="term1" placeholder="Term 1" class="search-input" />
+              <input v-model="term2" placeholder="Term 2" class="search-input" />
 
-              <el-button type="success" @click="performProximitySearch">
+              <button class="btn-success" @click="performProximitySearch">
                 Proximity Search
-              </el-button>
+              </button>
             </div>
       </div>
 
@@ -465,19 +465,56 @@ setup() {
 
 .search {
   width: 100%;
-  height: 60px;
+  height: 55px;
   background-color: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.search-input {
+  width: 50%;
+  padding: 10px 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #4A5D73;
+}
+
+.btn-primary {
+  background-color: #0e2d62;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-success {
+  background-color: #0e2d62;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 10px 18px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 .rankL {
   width: 20%;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 20px;
 
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
@@ -510,7 +547,6 @@ setup() {
   width: 100%;
   height: 40px;
   background-color: #fff;
-  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -562,7 +598,7 @@ setup() {
 .rankR1 {
   height: 300px;
   background-color: #fff;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 20px 0 0 20px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 }
