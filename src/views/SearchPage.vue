@@ -285,19 +285,26 @@ setup() {
     if (chartContainer) {
       chartD.value = echarts.init(chartContainer);
       chartD.value.setOption({
-        color: ['#6B90F5', '#F7D37B', '#F09674'],
+        color: ['#6B90F5', '#F7D37B', '#F09674', '#72C472', '#FF8C00', '#A37BF7'],
         legend: {
+          type: 'scroll',
+          orient: 'horizontal',
           bottom: '2%',
           left: 'center',
           itemWidth: 10,
           itemHeight: 10,
-          icon: "circle"
+          icon: "circle",
+          textStyle: {
+            color: "#333",
+            fontSize: 12
+          },
         },
         series: [
           {
-            name: '访问来源',
+            name: 'Source Analytics',
             type: 'pie',
             radius: ['50%', '70%'],
+            center: ['50%', '45%'],
             label: {
               show: false,
               position: 'center'
@@ -624,5 +631,9 @@ setup() {
   padding: 20px 0 0 20px;
   margin-top: 20px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 </style>
