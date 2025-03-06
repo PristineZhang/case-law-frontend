@@ -36,7 +36,7 @@
                   </div>
                   <div class="timeItem">
                       <el-checkbox-group v-model="checkList.time">
-                          <el-checkbox :label="item.year" v-for="(item, index) in filtersYear"
+                          <el-checkbox :label="item.val" v-for="(item, index) in filtersYear"
                               :key="index" />
 
                       </el-checkbox-group>
@@ -131,13 +131,6 @@ setup() {
   const titles = ref([]);
   const yearAnalytics = ref([]);
   const sourceAnalytics = ref([]);
-  // const yearAnalytics =  [
-  //     { name: '2025', value: 1048 },
-  //     { name: '2024', value: 735 },
-  //     { name: '2023', value: 580 },
-  //     { name: '2022', value: 1048 },
-  //     { name: '2021', value: 735 },
-  //   ];
 
   const dialogVisible = ref(false);
   const selectedItem = ref({});
@@ -176,7 +169,6 @@ setup() {
     { year: '2023' , val: 2023 },
     { year: '2022' , val: 2022 },
     { year: '2021' , val: 2021 },
-    { year: '1977' , val: 1977 },
     { year: '2020及以前' , val: 2020 },
   ];
 
@@ -262,7 +254,6 @@ setup() {
             labelLine: {
               show: false
             },
-            // data: yearAnalytics
             data: yearAnalytics.value
           }
         ]
@@ -380,8 +371,6 @@ setup() {
           total.value = response.collection_counts.legislation;
           titles.value = [...response.results.legislation];
           sourceData = response.distributions.source.legislation
-
-          // todo 时间可视化所需数据
           yearData = response.distributions.year.legislation
 
         } else {
@@ -389,7 +378,6 @@ setup() {
           total.value = response.collection_counts.court_case;
           titles.value = [...response.results.court_case];
           sourceData = response.distributions.source.court_case
-           // todo 时间可视化所需数据
            yearData = response.distributions.year.court_case
         }
           
@@ -407,7 +395,7 @@ setup() {
 
         if (yearData) {
           yearData = Object.entries(yearData)
-            .filter(([key]) => ["2020", "2021", "2022", "2023", "2024", "2025"].includes(key))
+            .filter(([key]) => ["2021", "2022", "2023", "2024", "2025"].includes(key))
             .map(([key, value]) => ({
               name: key,
               value: value
