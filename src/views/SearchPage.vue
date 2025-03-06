@@ -101,9 +101,9 @@
           </div>
 
           <div class="rankR">
-              <div class="rankR1">
-                  <div class="rankR1Title">Case by Year</div>
-                  <div id="echartsBar" style="width:90%;height: 80%;margin-top: 30px;"></div>
+              <div class="rankR2">
+                  <div class="rankR1Title">Year Analytics</div>
+                  <div id="echartsDoughnutTime" style="width:90%;height: 250px;"></div>
               </div>
               <div class="rankR2">
                   <div class="rankR1Title">Source Analytics</div>
@@ -132,6 +132,13 @@ setup() {
   // const year = ref([]);
   // const count = ref([]);
   const sourceAnalytics = ref([]);
+  const yearAnalytics =  [
+      { name: '2025', value: 1048 },
+      { name: '2024', value: 735 },
+      { name: '2023', value: 580 },
+      { name: '2022', value: 1048 },
+      { name: '2021', value: 735 },
+    ];
 
   const dialogVisible = ref(false);
   const selectedItem = ref({});
@@ -224,69 +231,39 @@ setup() {
   });
 
   // Initialize bar chart
-  const echartsBarInit = () => {
-    const chartContainer = document.getElementById('echartsBar');
+  const echartsDoughnutTimeInit = () => {
+    const chartContainer = document.getElementById('echartsDoughnutTime');
     if (chartContainer) {
       chart.value = echarts.init(chartContainer);
       chart.value.setOption({
-        grid: {
-          left: '0',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          containLabel: true
-        },
-        xAxis: {
-          type: 'value',
-          splitLine: { show: false },
-          axisLabel: { show: false },
-          axisTick: { show: false },
-          axisLine: { show: false }
-        },
-        yAxis: {
-          type: 'category',
-          axisTick: { show: false },
-          axisLine: { show: false },
-          axisLabel: {
-            color: 'black',
+        color: ['#6B90F5', '#F7D37B', '#F09674', '#72C472', '#FF8C00', '#A37BF7'],
+        legend: {
+          type: 'scroll',
+          orient: 'horizontal',
+          bottom: '2%',
+          left: 'center',
+          itemWidth: 10,
+          itemHeight: 10,
+          icon: "circle",
+          textStyle: {
+            color: "#333",
             fontSize: 12
           },
-          data: year.value
         },
         series: [
           {
-            name: '',
-            type: 'bar',
-            barWidth: 10,
-            data: count.value,
+            name: 'Year Analytics',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            center: ['50%', '45%'],
             label: {
-              show: true,
-              position: 'right',
-              offset: [0, 0],
-              formatter: '{c}{a}',
-              color: 'black',
-              fontSize: 12
+              show: false,
+              position: 'center'
             },
-            itemStyle: {
-              normal: {
-                barBorderRadius: 3,
-                color: "#6993EE"
-              }
+            labelLine: {
+              show: false
             },
-            zlevel: 1
-          },
-          {
-            name: '进度条背景',
-            type: 'bar',
-            barGap: '-100%',
-            barWidth: 10,
-            data: [100, 100, 100],
-            color: '#ffffff',
-            itemStyle: {
-              normal: {
-                barBorderRadius: 3
-              }
-            }
+            data: yearAnalytics
           }
         ]
       });
@@ -423,6 +400,7 @@ setup() {
         }
         sourceAnalytics.value = sourceData;
         echartDoughnutInit();
+        echartsDoughnutTimeInit();
       })
       .catch(error => {
         console.error('There was an error fetching titles:', error);
@@ -446,7 +424,7 @@ setup() {
 
     filteredSource,
 
-    echartsBarInit,
+    echartsDoughnutTimeInit,
     echartDoughnutInit,
     fetchTitles,
     // getCaseByYear,
