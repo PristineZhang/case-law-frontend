@@ -55,7 +55,7 @@
               </div>
           </div>
 
-          <div class="rankC">
+          <div class="rankC" v-if="titles.length > 0">
               <div class="rankC1">
                     <div @click="changeSelection('court_case')">
                         Case    {{ caseCount > 0 ? caseCount : '' }}
@@ -77,16 +77,15 @@
                           </div>
                       </div>
                   </el-card>
+                  <el-pagination
+                    class="custom-pagination"
+                    v-model:current-page="currentPage"
+                    :page-size="pageSize"
+                    :total="total"
+                    layout="prev, pager, next"
+                    @current-change="fetchTitles"
+                  />
               </div>
-
-              <el-pagination
-                class="custom-pagination"
-                v-model:current-page="currentPage"
-                :page-size="pageSize"
-                :total="total"
-                layout="prev, pager, next"
-                @current-change="fetchTitles"
-              />
 
               <el-dialog v-model="dialogVisible" width="50%">
                 <div>
@@ -97,7 +96,24 @@
                   <el-button @click="dialogVisible = false">关闭</el-button>
                 </template>
               </el-dialog>
-
+          </div>
+          <div v-else class="rankC">
+            <div class="rankC2">
+                  <el-card style="text-align: center;">
+                    <p style="font-size: 16px;color: #666;margin-bottom: 15px;">
+                      No relevant results found.<br>
+                      Use the search bar above to start Boolean Search or Proximity search.</p>
+                      <img src="https://img.icons8.com/ios/100/empty-box.png" alt="No Data" style="width: 200px;margin-bottom: 15px;">
+                      <div v-if="titles.length === 0" class="suggestions">
+                        <p class="suggestions-title">Try these popular searches:</p>
+                        <ul class="suggestions-list">
+                          <li @click="recommendSearch('cat')">📌 cat</li>
+                          <li @click="recommendSearch('service')">📌 service</li>
+                          <li @click="recommendSearch('game')">📌 game</li>
+                        </ul>
+                      </div>
+                  </el-card>
+              </div>
           </div>
 
           <div class="rankR">
@@ -414,6 +430,11 @@ setup() {
     // fetchTitles();
   });
 
+  const recommendSearch = (recommend) => {
+    keyword.value = recommend
+    fetchTitles();
+  }
+
   return {
     checkList,
     keyword,
@@ -453,6 +474,8 @@ setup() {
     term1,
     term2,
     performProximitySearch,
+
+    recommendSearch,
   };
 }
 };
@@ -630,5 +653,28 @@ setup() {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+
+.suggestions-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.suggestions-list {
+  list-style: none;
+  padding: 0;
+}
+
+.suggestions-list li {
+  cursor: pointer;
+  color: #007bff;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.suggestions-list li:hover {
+  text-decoration: underline;
 }
 </style>
