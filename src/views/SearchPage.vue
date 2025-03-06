@@ -129,8 +129,7 @@ setup() {
   const chart = ref(null);
   const chartD = ref(null);
   const titles = ref([]);
-  // const year = ref([]);
-  // const count = ref([]);
+  // const yearAnalytics = ref([]);
   const sourceAnalytics = ref([]);
   const yearAnalytics =  [
       { name: '2025', value: 1048 },
@@ -264,6 +263,7 @@ setup() {
               show: false
             },
             data: yearAnalytics
+            // data: yearAnalytics.value
           }
         ]
       });
@@ -373,6 +373,7 @@ setup() {
         titles.value = [];  // 先清空，避免 Vue 误判无变化
 
         let sourceData = null;
+        let yearData = null;
 
         if (selected.value === "legislation") {
           legislationCount.value = response.collection_counts.legislation;
@@ -381,12 +382,15 @@ setup() {
           sourceData = response.source_distributions.legislation
 
           // todo 时间可视化所需数据
+          // yearData = response.year_distributions.legislation
+
         } else {
           caseCount.value = response.collection_counts.court_case;
           total.value = response.collection_counts.court_case;
           titles.value = [...response.results.court_case];
           sourceData = response.source_distributions.court_case
            // todo 时间可视化所需数据
+           // yearData = response.year_distributions.court_case
         }
           
         // 适配 ECharts
@@ -399,6 +403,15 @@ setup() {
           }));
         }
         sourceAnalytics.value = sourceData;
+
+
+        if (yearData) {
+          yearData = Object.entries(yearData).map(([key, value]) => ({
+            name: key,
+            value: value
+          }));
+        }
+        //  yearAnalytics.value = yearData
         echartDoughnutInit();
         echartsDoughnutTimeInit();
       })
@@ -417,8 +430,8 @@ setup() {
     chart,
     chartD,
     titles,
-    // year,
-    // count,
+
+    //  yearAnalytics,
     sourceAnalytics,
     filtersYear,
 
@@ -427,7 +440,6 @@ setup() {
     echartsDoughnutTimeInit,
     echartDoughnutInit,
     fetchTitles,
-    // getCaseByYear,
     
     dialogVisible,
     selectedItem,
