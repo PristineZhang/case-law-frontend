@@ -36,7 +36,7 @@
                   </div>
                   <div class="timeItem">
                       <el-checkbox-group v-model="checkList.time">
-                          <el-checkbox :label="item.year" :value="item.val" v-for="(item, index) in filtersDate"
+                          <el-checkbox :label="item.year" v-for="(item, index) in filtersYear"
                               :key="index" />
 
                       </el-checkbox-group>
@@ -129,8 +129,8 @@ setup() {
   const chart = ref(null);
   const chartD = ref(null);
   const titles = ref([]);
-  const year = ref([]);
-  const count = ref([]);
+  // const year = ref([]);
+  // const count = ref([]);
   const sourceAnalytics = ref([]);
 
   const dialogVisible = ref(false);
@@ -164,12 +164,13 @@ setup() {
   const term1 = ref("");
   const term2 = ref("");
 
-  const filtersDate = [
+  const filtersYear = [
     { year: '2025' , val: 2025 },
     { year: '2024' , val: 2024 },
     { year: '2023' , val: 2023 },
     { year: '2022' , val: 2022 },
     { year: '2021' , val: 2021 },
+    { year: '1977' , val: 1977 },
     { year: '2020及以前' , val: 2020 },
   ];
 
@@ -199,6 +200,7 @@ setup() {
     selected.value = type;
     currentPage.value = 1
     checkList.source = [];
+    checkList.time = [];
 
     if (selected.value === "legislation") {
       caseCount.value = 0
@@ -212,6 +214,7 @@ setup() {
 
   // Watch for changes in keyword, checkList.time, checkList.source
   watch([() => checkList.time, () => checkList.source], () => {
+    console.log(checkList.time)
     fetchTitles();
   });
 
@@ -382,7 +385,8 @@ setup() {
             collection:selected.value, 
             page:currentPage.value, 
             page_size:pageSize.value, 
-            source: checkList.source.length ? checkList.source.join(",") : "" 
+            source: checkList.source.length ? checkList.source.join(",") : "" ,
+            year: checkList.time.length ? checkList.time.join(",") : "" ,
           } 
       })
       .then(response => {
@@ -398,11 +402,14 @@ setup() {
           total.value = response.collection_counts.legislation;
           titles.value = [...response.results.legislation];
           sourceData = response.source_distributions.legislation
+
+          // todo 时间可视化所需数据
         } else {
           caseCount.value = response.collection_counts.court_case;
           total.value = response.collection_counts.court_case;
           titles.value = [...response.results.court_case];
           sourceData = response.source_distributions.court_case
+           // todo 时间可视化所需数据
         }
           
         // 适配 ECharts
@@ -422,20 +429,6 @@ setup() {
       });
   };
 
-  // Fetch case by year data
-  const getCaseByYear = () => {
-    axios
-      .get('/api/case-by-year')
-      .then(response => {
-        year.value = response.caseByYear.year;
-        count.value = response.caseByYear.val;
-        echartsBarInit();
-      })
-      .catch(error => {
-        console.error('There was an error fetching case-by-year data:', error);
-      });
-  };
-
   onMounted(() => {
     // fetchTitles();
   });
@@ -446,17 +439,17 @@ setup() {
     chart,
     chartD,
     titles,
-    year,
-    count,
+    // year,
+    // count,
     sourceAnalytics,
-    filtersDate,
+    filtersYear,
 
     filteredSource,
 
     echartsBarInit,
     echartDoughnutInit,
     fetchTitles,
-    getCaseByYear,
+    // getCaseByYear,
     
     dialogVisible,
     selectedItem,
