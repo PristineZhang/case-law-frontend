@@ -65,15 +65,15 @@
                     </div>      
               </div>
 
-              <div class="rankC2">
+              <div class="rankC2-results">
                   <el-card v-for="(item, index) in titles" :key="index" @click="openDialog(item)" class="cardItem">
                       <div class="cardBox">
                           <div class="cardTitle">{{ item.title }}</div>
-                          <div class="cardMeta">
-                              <span>time:{{ item.time }}</span>
-                              <span>source:{{ item.source }}</span>
-                              <span>tf:{{ item.tf }}</span>
-                              <span>doc_id:{{ item.doc_id }}</span>
+                          <div class="cardTime">
+                              <div>Time: {{ item.time }}</div>
+                              <div>Source: {{ item.source }}</div>
+                              <!-- <div>tf:{{ item.tf }}</div>
+                              <div>doc_id:{{ item.doc_id }}</div> -->
                           </div>
                       </div>
                   </el-card>
@@ -98,7 +98,7 @@
               </el-dialog>
           </div>
           <div v-else class="rankC">
-            <div class="rankC2">
+            <div class="rankC2-empty">
                   <el-card style="text-align: center;">
                     <p style="font-size: 16px;color: #666;margin-bottom: 15px;">
                       No relevant results found.<br>
@@ -487,6 +487,7 @@ setup() {
   display: flex;
   justify-content: space-between;
   padding: 30px;
+  align-items: stretch;
 }
 
 .search {
@@ -586,7 +587,7 @@ setup() {
   display: flex;
   align-items: center;
   justify-content: space-around;
-
+  margin-top: 0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
   border-radius: 8px !important;
 }
@@ -597,6 +598,7 @@ setup() {
   text-align: center;
   padding: 7px;
   flex: 0.5;
+  margin-top: 0;
 }
 
 .rankC1-case:hover {
@@ -609,6 +611,7 @@ setup() {
   text-align: center;
   padding: 7px;
   flex: 0.5;
+  margin-top: 0;
 }
 
 .rankC1-legislation:hover {
@@ -624,9 +627,18 @@ setup() {
   margin-left: 60px;
 }
 
-.rankC2 .el-card {
+.rankC2-results {
   width: 100%;
   margin-top: 20px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+.rankC2-empty .el-card {
+  width: 100%;
+  margin-top: 0px;
   cursor: pointer;
 
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
@@ -636,6 +648,7 @@ setup() {
 .cardItem{
   cursor: pointer;
   margin-bottom: 20px;
+  margin-top: 0;
 }
 
 .cardBox {
@@ -652,19 +665,12 @@ setup() {
   color: #333
 }
 
-.cardMeta {
+.cardTime {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
   color: #505050;
   font-size: 14px;
-}
-
-.cardTime {
-  color: #505050;
-  text-align: right;
-  font-size: 12px;
-  font-weight: bold;
 }
 
 .cardContent {
@@ -674,6 +680,10 @@ setup() {
 
 .rankR {
   width: 25%;
+  margin-top: 0;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .rankR1 {
@@ -682,6 +692,7 @@ setup() {
   border-radius: 8px;
   padding: 20px 0 0 20px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  margin-top: 0;
 }
 
 .rankR1Title {
@@ -692,7 +703,7 @@ setup() {
   background-color: #fff;
   border-radius: 8px;
   padding: 20px 0 0 20px;
-  margin-top: 20px;
+  margin-top: 0px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
