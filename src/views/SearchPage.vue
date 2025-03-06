@@ -129,15 +129,15 @@ setup() {
   const chart = ref(null);
   const chartD = ref(null);
   const titles = ref([]);
-  // const yearAnalytics = ref([]);
+  const yearAnalytics = ref([]);
   const sourceAnalytics = ref([]);
-  const yearAnalytics =  [
-      { name: '2025', value: 1048 },
-      { name: '2024', value: 735 },
-      { name: '2023', value: 580 },
-      { name: '2022', value: 1048 },
-      { name: '2021', value: 735 },
-    ];
+  // const yearAnalytics =  [
+  //     { name: '2025', value: 1048 },
+  //     { name: '2024', value: 735 },
+  //     { name: '2023', value: 580 },
+  //     { name: '2022', value: 1048 },
+  //     { name: '2021', value: 735 },
+  //   ];
 
   const dialogVisible = ref(false);
   const selectedItem = ref({});
@@ -262,8 +262,8 @@ setup() {
             labelLine: {
               show: false
             },
-            data: yearAnalytics
-            // data: yearAnalytics.value
+            // data: yearAnalytics
+            data: yearAnalytics.value
           }
         ]
       });
@@ -379,18 +379,18 @@ setup() {
           legislationCount.value = response.collection_counts.legislation;
           total.value = response.collection_counts.legislation;
           titles.value = [...response.results.legislation];
-          sourceData = response.source_distributions.legislation
+          sourceData = response.distributions.source.legislation
 
           // todo 时间可视化所需数据
-          // yearData = response.year_distributions.legislation
+          yearData = response.distributions.year.legislation
 
         } else {
           caseCount.value = response.collection_counts.court_case;
           total.value = response.collection_counts.court_case;
           titles.value = [...response.results.court_case];
-          sourceData = response.source_distributions.court_case
+          sourceData = response.distributions.source.court_case
            // todo 时间可视化所需数据
-           // yearData = response.year_distributions.court_case
+           yearData = response.distributions.year.court_case
         }
           
         // 适配 ECharts
@@ -406,12 +406,14 @@ setup() {
 
 
         if (yearData) {
-          yearData = Object.entries(yearData).map(([key, value]) => ({
-            name: key,
-            value: value
-          }));
+          yearData = Object.entries(yearData)
+            .filter(([key]) => ["2020", "2021", "2022", "2023", "2024", "2025"].includes(key))
+            .map(([key, value]) => ({
+              name: key,
+              value: value
+            }));
         }
-        //  yearAnalytics.value = yearData
+         yearAnalytics.value = yearData
         echartDoughnutInit();
         echartsDoughnutTimeInit();
       })
@@ -431,7 +433,7 @@ setup() {
     chartD,
     titles,
 
-    //  yearAnalytics,
+    yearAnalytics,
     sourceAnalytics,
     filtersYear,
 
