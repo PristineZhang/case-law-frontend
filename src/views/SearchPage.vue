@@ -57,23 +57,23 @@
 
           <div class="rankC" v-if="titles.length > 0">
               <div class="rankC1">
-                    <div @click="changeSelection('court_case')">
+                    <div class="rankC1-case" @click="changeSelection('court_case')">
                         Case    {{ caseCount > 0 ? caseCount : '' }}
                     </div>
-                    <div @click="changeSelection('legislation')">
+                    <div class="rankC1-legislation" @click="changeSelection('legislation')">
                         Legislation    {{ legislationCount > 0 ? legislationCount : '' }}
                     </div>      
               </div>
 
               <div class="rankC2">
-                  <el-card v-for="(item, index) in titles" :key="index" @click="openDialog(item)">
+                  <el-card v-for="(item, index) in titles" :key="index" @click="openDialog(item)" class="cardItem">
                       <div class="cardBox">
-                          <div>{{ item.title }}</div>
-                          <div class="cardTime">
-                              <div>time:{{ item.time }}</div>
-                              <div>source:{{ item.source }}</div>
-                              <div>tf:{{ item.tf }}</div>
-                              <div>doc_id:{{ item.doc_id }}</div>
+                          <div class="cardTitle">{{ item.title }}</div>
+                          <div class="cardMeta">
+                              <span>time:{{ item.time }}</span>
+                              <span>source:{{ item.source }}</span>
+                              <span>tf:{{ item.tf }}</span>
+                              <span>doc_id:{{ item.doc_id }}</span>
                           </div>
                       </div>
                   </el-card>
@@ -591,6 +591,30 @@ setup() {
   border-radius: 8px !important;
 }
 
+.rankC1-case {
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+  padding: 7px;
+  flex: 0.5;
+}
+
+.rankC1-case:hover {
+  background-color: #f0f0f0
+}
+
+.rankC1-legislation {
+  cursor: pointer;
+  border-radius: 8px;
+  text-align: center;
+  padding: 7px;
+  flex: 0.5;
+}
+
+.rankC1-legislation:hover {
+  background-color: #f0f0f0
+}
+
 .rankC1 div span:nth-child(1) {
   font-weight: bold;
 }
@@ -609,10 +633,31 @@ setup() {
   border-radius: 8px !important;
 }
 
+.cardItem{
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
 .cardBox {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #505050;
+  font-size: 14px;
 }
 
 .cardTime {
